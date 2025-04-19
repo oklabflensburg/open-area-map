@@ -1,4 +1,4 @@
-# Flurstücksauskunft Schleswig-Holstein
+# Bauplanauskunft Schleswig-Holstein
 
 [![Lint css files](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-css.yml/badge.svg)](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-css.yml)
 [![Lint html files](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-html.yml/badge.svg)](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-html.yml)
@@ -6,7 +6,7 @@
 [![Lighthouse CI](https://github.com/oklabflensburg/open-area-map/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/oklabflensburg/open-area-map/actions/workflows/lighthouse.yml)
 
 
-![Screenshot der interaktiven Flurstücksauskunft](https://raw.githubusercontent.com/oklabflensburg/open-area-map/main/screenshot_bauplanauskunft.webp)
+![Screenshot der interaktiven Bauplanauskunft](https://raw.githubusercontent.com/oklabflensburg/open-area-map/main/screenshot_bauplanauskunft.webp)
 
 _Haftungsausschluss: Dieses Repository und die zugehörige Datenbank befinden sich derzeit in einer Beta-Version. Einige Aspekte des Codes und der Daten können noch Fehler enthalten. Bitte kontaktieren Sie uns per E-Mail oder erstellen Sie ein Issue auf GitHub, wenn Sie einen Fehler entdecken._
 

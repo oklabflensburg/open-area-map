@@ -110,7 +110,7 @@ function fetchXplanMeta(lat, lng) {
 
 
 function updateScreen(screen) {
-  const title = 'ALKIS® Flurstücksauskunft Schleswig-Holstein'
+  const title = 'Bauplanauskunft für Schleswig-Holstein'
 
   if (screen === 'home') {
     document.querySelector('title').innerHTML = title
@@ -130,13 +130,13 @@ document.addEventListener('DOMContentLoaded', function () {
   L.tileLayer('https://tiles.oklabflensburg.de/sgm/{z}/{x}/{y}.png', {
     maxZoom: 20,
     maxNativeZoom: 20,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="dc:rights">OpenStreetMap</a> contributors'
+    attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="dc:rights">OpenStreetMap</a> contributors'
   }).addTo(map)
 
   L.tileLayer('https://tiles.oklabflensburg.de/xplan/{z}/{x}/{y}.png', {
     maxZoom: 20,
     maxNativeZoom: 20,
-    attribution: '&copy; <a href="https://www.schleswig-holstein.de/DE/landesregierung/ministerien-behoerden/LVERMGEOSH" target="_blank" rel="dc:rights">GeoBasis-DE/LVermGeo SH</a>/<a href="https://creativecommons.org/licenses/by/4.0" target="_blank" rel="dc:rights">CC BY 4.0</a>'
+    attribution: '<a href="https://www.govdata.de/dl-de/by-2-0" rel="dc:rights">dl-de/by-2-0</a>, © <a href="https://www.gdi-sh.de" rel="dc:rights">GDI-SH</a>'
   }).addTo(map)
 
   map.on('click', function (e) {

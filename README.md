@@ -1,4 +1,4 @@
-# Bauplanauskunft Schleswig-Holstein
+# Bauplanauskunft
 
 [![Lint css files](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-css.yml/badge.svg)](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-css.yml)
 [![Lint html files](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-html.yml/badge.svg)](https://github.com/oklabflensburg/open-area-map/actions/workflows/lint-html.yml)
@@ -18,7 +18,7 @@ Diese interaktive Karte wurde vom OK Lab Flensburg entwickelt, um Baupläne in S
 
 ## Datenquelle
 
-Der Datensatz ALKIS Schleswig-Holstein ohne Eigentümerangaben, wird durch das Landesamt für Vermessung und Geoinformation im Open-Data Portal Schleswig-Holstein zum Download zur Verfügung gestellt.
+Die zugrundeliegenden Planungsdaten stammen vom Landesamt für Vermessung und Geoinformation Schleswig-Holstein. Der Datensatz kann im WFS Format über das [Open Data Portal]() Schleswig-Holstein heruntergeladen werden.
 
 
 ## Aktualität
@@ -40,18 +40,6 @@ wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt
 sudo apt update
 sudo apt install postgresql-16 postgis
 sudo apt install gdal-bin
-
-# install NVM (Node Version Manager)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-
-# download and install Node.js
-nvm install 20
-
-# verifies the right Node.js version is in the environment
-node -v
-
-# verifies the right NPM version is in the environment
-npm -v
 
 git clone https://github.com/oklabflensburg/open-area-map.git
 ```
@@ -77,80 +65,6 @@ DB_HOST=localhost
 DB_USER=postgres
 DB_NAME=postgres
 DB_PORT=5432
-```
-
-
-
-## Download ALKIS®
-
-From march 2025 you will get the latest ALKIS® download from [Atom Feed Viewer](https://service.gdi-sh.de/AtomFeedViewer?feed=https://service.gdi-sh.de/SH_OpenGBD/feeds/Atom_SH_ALKIS_vereinf_OpenGBD/Atom_SH_ALKIS_vereinf_OpenGBD.xml)
-
-```sh
-psql -U oklab -h localhost -d oklab -p 5432 -c "\COPY (select ags from vg250_gem where ags like '01%' and gf = 4 ORDER BY ags DESC) TO 'vg250_gem_ags_sh.csv' WITH CSV DELIMITER ',' HEADER;"
-for i in $(cat vg250_gem_ags_sh.csv); do wget 'https://dienste.gdi-sh.de/WFS_SH_ALKIS_vereinf_OpenGBD?Request=GetFeature&Service=WFS&Version=2.0.0&gemeindeschluessel='$i'&StoredQuery_ID=GetFlstByGemeinde'; done
-for i in $(ls WFS*); do ogr2ogr -update -append -f "PostgreSQL" PG:"host=localhost port=5432 dbname=oklab user=oklab active_schema=postgres" -t_srs EPSG:4326 $i -progress; done
-```
-
-
-## Deprecated Download ALKIS®
-
-Tool to automate the download from the opendata [ALKIS®](https://geodaten.schleswig-holstein.de/gaialight-sh/_apps/dladownload/dl-alkis.html) files for Schleswig-Holstein
-
-```
-cd tools
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
-python3 alkis_downloader.py 1 18000 --path /data --verbose
-deactivate
-```
-
-
-
-## Import ALKIS®
-
-Make sure to adapt database connection string to your needs
-
-```
-cd /data/sh/alkis
-for i in *.zip; do f=$(basename $i | sed -e 's/.zip$//'); n=$(echo $f | sed -e 's/.*_//'); echo $n; unzip -o $f && [[ -e ${n}.xml ]] || gunzip "${n}.xml.gz" && ogr2ogr -f "PostgreSQL" PG:"dbname=oklab user=oklab port=5432 host=localhost" -nlt CONVERT_TO_LINEAR  -lco GEOMETRY_NAME=geom -lco SPATIAL_INDEX=GIST -update -overwrite -skipfailures -s_srs EPSG:25832 -t_srs EPSG:4326 -progress --config PG_USE_COPY YES $n.xml ax_flurstueck ax_gebaeude && rm -v ${n}.gfs ${n}.xml; done
-```
-
-
-
-## SH ALKIS Flurstücke inserts
-
-
-```
-psql -U oklab -h localhost -d oklab -p 5432 < ../data/sh_alkis_area_schema.sql
-```
-
-```
-cd tools
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
-python3 insert_area_csv.py --env ../.env --src ../data/sh/alkis/flur_test_1.csv --verbose
-deactivate
-```
-
-
-
-## Import Gemarkungen DE
-
-Tool zum importieren der Meta Daten der Gemarkungen in Deutschland
-
-```
-psql -U oklab -h localhost -d oklab -p 5432 < ../data/de_cadastral_district_meta_schema.sql
-```
-
-```
-cd tools
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
-python3 insert_cadastral_district_csv.py --env ../.env --src ../data/gemarkungen_deutschland.csv --verbose
-deactivate
 ```
 
 

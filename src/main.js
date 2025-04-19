@@ -95,6 +95,13 @@ function renderXplanMeta(data) {
     </li>`;
   }
 
+  if (data['description']) {
+    detailOutput += `<li class="list-group-item">
+      <span class="font-bold">Beschreibung:</span><br>
+      <span>${data['description']}</span>
+    </li>`
+  }
+
   document.querySelector('#detailList').innerHTML = detailOutput
   document.querySelector('#sidebar').classList.remove('hidden')
   document.querySelector('#sidebar').classList.add('absolute')

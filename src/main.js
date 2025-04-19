@@ -59,15 +59,41 @@ function renderXplanMeta(data) {
   currentLayer = L.geoJSON(geoJsonData, {
     style: {
       color: '#2463eb',
-      weight: 2,
-      fillOpacity: 0.1
+      weight: 4,
+      fillOpacity: 0.2
     }
   }).addTo(map)
 
   map.fitBounds(currentLayer.getBounds())
   console.log(data)
 
-  const detailOutput = ''
+  let detailOutput = ''
+
+  if (data['plan_name']) {
+    detailOutput += `<li class="list-group-item">
+      <span class="font-bold">Name:</span><br>
+      <span>${data['plan_name']}</span>
+    </li>`
+  }
+
+  if (data['plan_number']) {
+    detailOutput += `<li class="list-group-item">
+      <span class="font-bold">Plan Nummer:</span><br>
+      <span>${data['plan_number']}</span>
+    </li>`
+  }
+
+  if (data['municipality']) {
+    const formattedMunicipality = data['municipality']
+      .replace(/^\[|\]$/g, '') // Remove brackets
+      .split('|') // Split on pipe
+      .join('<br>'); // Join with <br>
+    
+    detailOutput += `<li class="list-group-item">
+      <span class="font-bold">Gemeinde:</span><br>
+      <span>${formattedMunicipality}</span>
+    </li>`;
+  }
 
   document.querySelector('#detailList').innerHTML = detailOutput
   document.querySelector('#sidebar').classList.remove('hidden')
